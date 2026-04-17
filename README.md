@@ -31,6 +31,14 @@ It supports full-page extraction, selected-text summaries from the context menu,
 - `Options`: manages settings and lets you inspect history entries
 - `Reader`: shows the latest result in a larger, more readable layout
 
+### Popup
+
+![Trimly AI Popup](screenshots/popup.jpg)
+
+### Settings
+
+![Trimly AI Settings](screenshots/settings.jpg)
+
 ## Getting Started
 
 ### Install dependencies
