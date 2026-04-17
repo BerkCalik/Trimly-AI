@@ -1,6 +1,6 @@
 {
   "name": "trimlyai-chrome-extension",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "TrimlyAi Chrome extension for summarizing web pages with OpenAI.",
   "type": "module",

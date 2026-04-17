@@ -75,6 +75,21 @@ For production output, build first and load `.output/chrome-mv3/`.
 - `npm run zip`: package the extension for distribution
 - `npm run typecheck`: run TypeScript checks without emitting files
 
+## Release
+
+GitHub release automation is configured via `.github/workflows/release.yml`.
+
+1. Bump `package.json` version (example: `0.1.1`)
+2. Push commit to `main`
+3. Create and push tag (example: `v0.1.1`)
+
+```bash
+git tag v0.1.1
+git push origin v0.1.1
+```
+
+When the tag is pushed, GitHub Actions runs `build`, `typecheck`, and `zip`, then uploads `.output/*-chrome.zip` to the GitHub Release assets.
+
 ## Configuration
 
 Trimly AI stores user settings in Chrome local storage.
