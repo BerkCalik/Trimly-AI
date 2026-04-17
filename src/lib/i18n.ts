@@ -1,11 +1,32 @@
-import type { HistoryItem } from "../types";
+import { useSyncExternalStore } from "react";
+
+import enMessages from "../../public/_locales/en/messages.json";
+import trMessages from "../../public/_locales/tr/messages.json";
+import type { AppLanguage, HistoryItem } from "../types";
 
 export interface LanguageOption {
   code: string;
   label: string;
 }
 
+interface LocaleMessage {
+  message: string;
+  placeholders?: Record<string, { content: string }>;
+}
+
+type LocaleMessages = Record<string, LocaleMessage>;
+
+const UI_LANGUAGE_CODES = ["en", "tr"] as const;
+const localeCatalogs: Record<(typeof UI_LANGUAGE_CODES)[number], LocaleMessages> = {
+  en: enMessages as LocaleMessages,
+  tr: trMessages as LocaleMessages,
+};
+
+let activeAppLanguage: AppLanguage = "auto";
+const listeners = new Set<() => void>();
+
 export const SUPPORTED_LANGUAGES: LanguageOption[] = [
+  { code: "original", label: "Original" },
   { code: "en", label: "English" },
   { code: "tr", label: "Turkish" },
   { code: "de", label: "German" },
@@ -24,8 +45,40 @@ export const SUPPORTED_LANGUAGES: LanguageOption[] = [
   { code: "zh", label: "Chinese" },
 ];
 
-export function msg(key: string, substitutions?: string | string[]): string {
-  return chrome.i18n.getMessage(key, substitutions) || key;
+function notifyI18nChange(): void {
+  listeners.forEach((listener) => listener());
+}
+
+function substituteMessage(
+  entry: LocaleMessage | undefined,
+  substitutions?: string | string[],
+): string | null {
+  if (!entry) {
+    return null;
+  }
+
+  let message = entry.message;
+  if (!substitutions) {
+    return message;
+  }
+
+  const values = Array.isArray(substitutions) ? substitutions : [substitutions];
+
+  if (entry.placeholders) {
+    for (const [name, placeholder] of Object.entries(entry.placeholders)) {
+      const match = placeholder.content.match(/\$(\d+)/);
+      const index = match ? Number(match[1]) - 1 : -1;
+      const replacement = index >= 0 ? values[index] ?? "" : "";
+      message = message.replaceAll(`$${name.toUpperCase()}$`, replacement);
+    }
+    return message;
+  }
+
+  values.forEach((value, index) => {
+    message = message.replaceAll(`$${index + 1}`, value);
+  });
+
+  return message;
 }
 
 export function detectBrowserLanguage(): string {
@@ -37,7 +90,53 @@ export function detectBrowserLanguage(): string {
     : "en";
 }
 
+export function detectUiLanguage(): "en" | "tr" {
+  const uiLanguage = chrome.i18n?.getUILanguage?.() || navigator.language || "en";
+  const baseLanguage = uiLanguage.toLowerCase().split("-")[0];
+
+  return baseLanguage === "tr" ? "tr" : "en";
+}
+
+export function getResolvedAppLanguage(appLanguage: AppLanguage = activeAppLanguage): "en" | "tr" {
+  return appLanguage === "auto" ? detectUiLanguage() : appLanguage;
+}
+
+export function setAppLanguage(appLanguage: AppLanguage): void {
+  activeAppLanguage = appLanguage;
+  notifyI18nChange();
+}
+
+export function getAppLanguage(): AppLanguage {
+  return activeAppLanguage;
+}
+
+export function useI18nVersion(): AppLanguage {
+  return useSyncExternalStore(
+    (listener) => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    getAppLanguage,
+    getAppLanguage,
+  );
+}
+
+export function msg(key: string, substitutions?: string | string[]): string {
+  const resolvedLanguage = getResolvedAppLanguage();
+
+  if (activeAppLanguage === "auto") {
+    return chrome.i18n.getMessage(key, substitutions) || key;
+  }
+
+  const localized = substituteMessage(localeCatalogs[resolvedLanguage][key], substitutions);
+  return localized || key;
+}
+
 export function getLanguageLabel(code: string): string {
+  if (code === "original") {
+    return "the original language of the source text";
+  }
+
   return SUPPORTED_LANGUAGES.find((language) => language.code === code)?.label ?? code;
 }
 
@@ -66,7 +165,7 @@ export function translateDocument(root: ParentNode = document): void {
 
 export function formatHistoryTime(item: HistoryItem): string {
   const seconds = Math.round((item.timestamp - Date.now()) / 1000);
-  const formatter = new Intl.RelativeTimeFormat(detectBrowserLanguage(), {
+  const formatter = new Intl.RelativeTimeFormat(getResolvedAppLanguage(), {
     numeric: "auto",
   });
 

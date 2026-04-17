@@ -141,8 +141,46 @@ body {
 }
 
 .input-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
+  align-items: stretch;
+}
+
+.input-with-icon {
+  position: relative;
+  min-width: 0;
+}
+
+.input-icon-button {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.input-icon-button:hover {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.input-icon {
+  width: 18px;
+  height: 18px;
 }
 
 .input,
@@ -157,12 +195,17 @@ body {
   background: var(--panel-strong);
 }
 
+.input-with-icon-field {
+  padding-right: 4rem;
+}
+
 .textarea {
   resize: vertical;
   min-height: 240px;
 }
 
 .hint,
+.field-explainer,
 .detail-meta,
 .save-feedback,
 .history-meta,
@@ -172,10 +215,27 @@ body {
   font-size: 0.92rem;
 }
 
+.field-explainer {
+  margin-top: -4px;
+}
+
 .action-row {
   display: flex;
   justify-content: space-between;
   gap: 12px;
+}
+
+.settings-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.settings-feedback {
+  grid-column: 1 / -1;
+  text-align: center;
 }
 
 .ghost-button {
@@ -193,6 +253,11 @@ body {
   border-color: var(--border);
   background: transparent;
   color: var(--accent);
+}
+
+.api-token-button {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .history-list {
@@ -227,6 +292,13 @@ body {
   min-height: 520px;
 }
 
+.history-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 100%;
+}
+
 .detail-title {
   margin: 0;
   font-size: 1.5rem;
@@ -237,6 +309,27 @@ body {
   color: var(--accent);
   text-decoration: none;
   word-break: break-word;
+}
+
+.history-prompt-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.prompt-output {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  background: var(--panel-strong);
+  color: var(--text);
+  font: inherit;
+  line-height: 1.55;
 }
 
 .summary-output h1,

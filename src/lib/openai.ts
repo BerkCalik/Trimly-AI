@@ -1,4 +1,4 @@
-import { DEFAULT_PROMPT } from "./storage";
+import { getDefaultPrompt, getSystemPrompt, LENGTH_LABELS } from "../config/prompts";
 import type { Model, SummaryErrorCode, SummaryLength } from "../types";
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
@@ -10,19 +10,13 @@ export class RateLimitError extends Error {}
 export class NetworkError extends Error {}
 export class TimeoutError extends Error {}
 
-const LENGTH_LABELS: Record<SummaryLength, string> = {
-  short: "2-3 sentences",
-  medium: "1 paragraph",
-  detailed: "3-4 paragraphs",
-};
-
 export function buildPrompt(
   content: string,
   language: string,
   length: SummaryLength,
   customPrompt: string | null,
 ): string {
-  const template = customPrompt?.trim() || DEFAULT_PROMPT;
+  const template = customPrompt?.trim() || getDefaultPrompt(length);
 
   return template
     .replaceAll("{language}", language)
@@ -72,6 +66,7 @@ export async function* streamSummary(params: {
   apiKey: string;
   model: Model;
   prompt: string;
+  length?: SummaryLength;
 }): AsyncGenerator<string> {
   const controller = new AbortController();
   const timeoutId = globalThis.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -90,8 +85,7 @@ export async function* streamSummary(params: {
         messages: [
           {
             role: "system",
-            content:
-              "You summarize web content clearly, accurately, and concisely. Return markdown only.",
+            content: getSystemPrompt(params.length),
           },
           {
             role: "user",

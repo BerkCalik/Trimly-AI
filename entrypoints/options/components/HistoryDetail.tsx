@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import type { HistoryItem } from "../../../src/types";
 import { msg } from "../../../src/lib/i18n";
 
@@ -14,6 +16,12 @@ export function HistoryDetail({
   renderSummary,
   formatDate,
 }: HistoryDetailProps) {
+  const [isPromptVisible, setIsPromptVisible] = useState(false);
+
+  useEffect(() => {
+    setIsPromptVisible(false);
+  }, [item?.id]);
+
   return (
     <div className="panel-card history-detail-card">
       {item ? (
@@ -31,6 +39,17 @@ export function HistoryDetail({
               className="summary-output"
               dangerouslySetInnerHTML={{ __html: renderSummary(item.summary) }}
             />
+            {item.prompt ? (
+              <div className="history-prompt-section">
+                <button
+                  className="secondary-button"
+                  type="button"
+                  onClick={() => setIsPromptVisible((current) => !current)}>
+                  {msg(isPromptVisible ? "historyHidePrompt" : "historyShowPrompt")}
+                </button>
+                {isPromptVisible ? <pre className="prompt-output">{item.prompt}</pre> : null}
+              </div>
+            ) : null}
           </div>
         </>
       ) : (

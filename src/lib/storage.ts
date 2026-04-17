@@ -1,16 +1,10 @@
 import { detectBrowserLanguage } from "./i18n";
-import type { HistoryItem, Settings } from "../types";
+import type { HistoryItem, ReaderPayload, Settings } from "../types";
 
 const SETTINGS_KEY = "settings";
 const HISTORY_KEY = "history";
+const READER_PAYLOAD_KEY = "reader-payload";
 const HISTORY_LIMIT = 50;
-
-export const DEFAULT_PROMPT = `You are a text summarizer. Summarize the following article in {language}.
-Summary length: {length}.
-Use markdown formatting with short headings and bullet points where appropriate.
-
-Article:
-{content}`;
 
 export function getDefaultSettings(): Settings {
   return {
@@ -19,6 +13,7 @@ export function getDefaultSettings(): Settings {
     language: detectBrowserLanguage(),
     summaryLength: "medium",
     theme: "auto",
+    appLanguage: "auto",
     customPrompt: null,
   };
 }
@@ -81,4 +76,17 @@ export async function clearHistory(): Promise<void> {
   await chrome.storage.local.set({
     [HISTORY_KEY]: [],
   });
+}
+
+export async function saveReaderPayload(payload: ReaderPayload): Promise<void> {
+  await chrome.storage.local.set({
+    [READER_PAYLOAD_KEY]: payload,
+  });
+}
+
+export async function getReaderPayload(): Promise<ReaderPayload | null> {
+  const result = await chrome.storage.local.get(READER_PAYLOAD_KEY);
+  const payload = result[READER_PAYLOAD_KEY] as ReaderPayload | undefined;
+
+  return payload ?? null;
 }

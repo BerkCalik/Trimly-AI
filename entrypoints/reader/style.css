@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: linear-gradient(160deg, #f6fbfa 0%, #f8f7f1 50%, #ffe6db 100%);
+  --panel: rgba(255, 255, 255, 0.86);
+  --panel-strong: rgba(255, 255, 255, 0.96);
+  --text: #1d1b16;
+  --muted: #6e6758;
+  --accent: #16554f;
+  --accent-soft: #dcefed;
+  --border: rgba(46, 34, 17, 0.1);
+}
+
+html.dark {
+  color-scheme: dark;
+  --bg: radial-gradient(circle at top left, #193331 0%, #10211f 35%, #0b1114 100%);
+  --panel: rgba(16, 27, 29, 0.9);
+  --panel-strong: rgba(10, 18, 20, 0.96);
+  --text: #f2eee5;
+  --muted: #9ea59f;
+  --accent: #8bc5be;
+  --accent-soft: rgba(47, 136, 127, 0.22);
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.reader-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+}
+
+.reader-card {
+  border: 1px solid var(--border);
+  border-radius: 32px;
+  padding: 28px;
+  background: var(--panel);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px -30px rgba(24, 39, 75, 0.45);
+}
+
+.reader-empty {
+  max-width: 680px;
+}
+
+.reader-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.reader-title {
+  margin: 8px 0 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.reader-meta {
+  min-width: 0;
+  text-align: right;
+}
+
+.reader-link {
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.reader-description {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.reader-summary h1,
+.reader-summary h2,
+.reader-summary h3 {
+  margin: 0 0 0.9rem;
+  line-height: 1.2;
+}
+
+.reader-summary p,
+.reader-summary ul,
+.reader-summary ol,
+.reader-summary blockquote {
+  margin: 0 0 1.15rem;
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
+
+.reader-summary ul,
+.reader-summary ol {
+  padding-left: 1.35rem;
+}
+
+.reader-summary strong {
+  color: var(--accent);
+}
+
+.reader-summary code {
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.35rem;
+  background: var(--accent-soft);
+}
+
+@media (max-width: 760px) {
+  .reader-shell {
+    padding: 20px 14px 40px;
+  }
+
+  .reader-card {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .reader-header {
+    flex-direction: column;
+  }
+
+  .reader-meta {
+    text-align: left;
+  }
+}

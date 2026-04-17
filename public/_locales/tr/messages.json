@@ -3,25 +3,34 @@
     "message": "TrimlyAi"
   },
   "extDescription": {
-    "message": "Makale, blog ve secili metinleri OpenAI ile ozetleyin."
+    "message": "Makale, blog ve seçili metinleri OpenAI ile özetleyin."
   },
   "popupEmpty": {
-    "message": "Ozet olusturmak icin TrimlyAi'yi okunabilir bir sayfada acin."
+    "message": "Özet oluşturmak için TrimlyAi'yi okunabilir bir sayfada açın."
   },
   "popupLoading": {
-    "message": "Ozet hazirlaniyor"
+    "message": "Özet hazırlanıyor"
   },
   "popupCopy": {
-    "message": "Ozeti kopyala"
+    "message": "Özeti kopyala"
+  },
+  "popupOpenInNewTab": {
+    "message": "Yeni sekmede aç"
   },
   "popupCopied": {
-    "message": "Kopyalandi"
+    "message": "Kopyalandı"
+  },
+  "popupReady": {
+    "message": "Dili seçin ve özet oluşturmak için Trimly'ye basın."
+  },
+  "popupStart": {
+    "message": "Trimly"
   },
   "popupOpenSettings": {
-    "message": "Ayarlari ac"
+    "message": "Ayarları aç"
   },
   "popupTitle": {
-    "message": "Sayfa ozeti"
+    "message": "Sayfa özeti"
   },
   "popupThemeToggle": {
     "message": "Tema"
@@ -30,10 +39,10 @@
     "message": "Ayarlar"
   },
   "historyTab": {
-    "message": "Gecmis"
+    "message": "Geçmiş"
   },
   "apiKeyLabel": {
-    "message": "API anahtari"
+    "message": "API anahtarı"
   },
   "modelLabel": {
     "message": "Model"
@@ -42,61 +51,79 @@
     "message": "Dil"
   },
   "lengthLabel": {
-    "message": "Ozet uzunlugu"
+    "message": "Özet uzunluğu"
+  },
+  "appLanguageLabel": {
+    "message": "Uygulama dili"
+  },
+  "appLanguageAuto": {
+    "message": "Otomatik (Chrome dili)"
   },
   "themeLabel": {
     "message": "Tema"
   },
   "customPromptLabel": {
-    "message": "Ozel istem"
+    "message": "Özel istem"
   },
   "customPromptHint": {
-    "message": "{language}, {length} ve {content} yer tutucularini kullanin."
+    "message": "{language}, {length} ve {content} yer tutucularını kullanın."
   },
   "resetPrompt": {
-    "message": "Varsayilana don"
+    "message": "Varsayılana dön"
   },
   "save": {
     "message": "Kaydet"
+  },
+  "getApiToken": {
+    "message": "API token al"
   },
   "saveSuccess": {
     "message": "Kaydedildi"
   },
   "lengthShort": {
-    "message": "Kisa"
+    "message": "Kısa"
   },
   "lengthMedium": {
     "message": "Orta"
   },
   "lengthDetailed": {
-    "message": "Detayli"
+    "message": "Detaylı"
+  },
+  "lengthFull": {
+    "message": "Tam"
+  },
+  "settingsLanguageLengthHintSummary": {
+    "message": "Seçilen dil, özetin hangi dilde üretileceğini belirler. Tam dışındaki uzunluklarda uygulama metni özetler."
+  },
+  "settingsLanguageLengthHintFull": {
+    "message": "Seçilen dil, çıktı dilini belirler. Tam seçildiğinde uygulama özetlemez; metni seçilen dile tam olarak çevirir."
   },
   "themeAuto": {
     "message": "Otomatik"
   },
   "themeLight": {
-    "message": "Acik"
+    "message": "Açık"
   },
   "themeDark": {
     "message": "Koyu"
   },
   "historySearch": {
-    "message": "Gecmiste ara"
+    "message": "Geçmişte ara"
   },
   "historyClear": {
-    "message": "Gecmisi temizle"
+    "message": "Geçmişi temizle"
   },
   "historyClearConfirm": {
-    "message": "Kayitli tum ozetler silinsin mi?"
+    "message": "Kayıtlı tüm özetler silinsin mi?"
   },
   "historyEmpty": {
-    "message": "Henuz ozet yok."
+    "message": "Henüz özet yok."
   },
   "historyBack": {
-    "message": "Listeye don"
+    "message": "Listeye dön"
   },
   "historyTimeAgo": {
-    "message": "$TIME$ once",
+    "message": "$TIME$ önce",
     "placeholders": {
       "time": {
         "content": "$1"
@@ -104,45 +131,57 @@
     }
   },
   "historyDetailEmpty": {
-    "message": "Detaylari gormek icin bir ozet secin."
+    "message": "Detayları görmek için bir özet seçin."
   },
   "historyDate": {
-    "message": "Kayit tarihi"
+    "message": "Kayıt tarihi"
+  },
+  "historyShowPrompt": {
+    "message": "Promptu göster"
+  },
+  "historyHidePrompt": {
+    "message": "Promptu gizle"
   },
   "show": {
-    "message": "Goster"
+    "message": "Göster"
   },
   "hide": {
     "message": "Gizle"
   },
   "errorNoApiKey": {
-    "message": "Lutfen ayarlarda API anahtarinizi girin."
+    "message": "Lütfen ayarlarda API anahtarınızı girin."
   },
   "errorInvalidApiKey": {
-    "message": "API anahtari gecersiz. Anahtari kontrol edin."
+    "message": "API anahtarı geçersiz. Anahtarı kontrol edin."
   },
   "errorRateLimit": {
-    "message": "Hiz siniri asildi. Lutfen biraz bekleyin."
+    "message": "Hız sınırı aşıldı. Lütfen biraz bekleyin."
   },
   "errorNetwork": {
-    "message": "Baglanti hatasi. Internet baglantinizi kontrol edin."
+    "message": "Bağlantı hatası. İnternet bağlantınızı kontrol edin."
   },
   "errorNoContent": {
-    "message": "Okunabilir icerik bulunamadi. Metin secip tekrar deneyin."
+    "message": "Okunabilir içerik bulunamadı. Metin seçip tekrar deneyin."
   },
   "errorContentTrimmed": {
-    "message": "Sayfa cok uzundu, bu yuzden yalnizca ilk kisim ozetlendi."
+    "message": "Sayfa çok uzundu, bu yüzden yalnızca ilk kısım özetlendi."
   },
   "errorTimeout": {
-    "message": "Istek zaman asimina ugradi. Lutfen tekrar deneyin."
+    "message": "İstek zaman aşımına uğradı. Lütfen tekrar deneyin."
   },
   "errorUnknown": {
-    "message": "Ozet olusturulurken bir hata olustu."
+    "message": "Özet oluşturulurken bir hata oluştu."
   },
   "contextMenuTitle": {
-    "message": "TrimlyAi ile ozetle"
+    "message": "TrimlyAi ile özetle"
   },
   "optionsTitle": {
-    "message": "TrimlyAi ayarlari"
+    "message": "TrimlyAi ayarları"
+  },
+  "readerEmptyTitle": {
+    "message": "Gösterilecek özet yok"
+  },
+  "readerEmptyBody": {
+    "message": "Popup'ta bir özet oluşturup Yeni sekmede aç butonunu kullanın."
   }
 }

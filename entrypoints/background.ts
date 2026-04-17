@@ -1,4 +1,4 @@
-import { getLanguageLabel, msg } from "../src/lib/i18n";
+import { getLanguageLabel, msg, setAppLanguage } from "../src/lib/i18n";
 import {
   buildPrompt,
   streamSummary,
@@ -11,6 +11,7 @@ import type {
   RuntimeEvent,
   RuntimeRequest,
   RuntimeResponse,
+  SummaryLength,
 } from "../src/types";
 
 const CONTEXT_MENU_ID = "trimly-summarize";
@@ -25,6 +26,8 @@ async function emitRuntimeEvent(event: RuntimeEvent): Promise<void> {
 }
 
 async function ensureContextMenu(): Promise<void> {
+  const settings = await getSettings();
+  setAppLanguage(settings.appLanguage);
   await chrome.contextMenus.removeAll();
   await chrome.contextMenus.create({
     id: CONTEXT_MENU_ID,
@@ -38,8 +41,15 @@ async function bootstrap(): Promise<void> {
   await ensureContextMenu();
 }
 
-async function handleSummaryRequest(request: ExtractedContent, requestId: string): Promise<void> {
+async function handleSummaryRequest(
+  request: ExtractedContent,
+  requestId: string,
+  languageOverride?: string,
+  summaryLengthOverride?: SummaryLength,
+): Promise<void> {
   const settings = await getSettings();
+  const effectiveLanguage = languageOverride ?? settings.language;
+  const effectiveSummaryLength = summaryLengthOverride ?? settings.summaryLength;
 
   if (!request.content.trim()) {
     await emitRuntimeEvent({
@@ -67,8 +77,8 @@ async function handleSummaryRequest(request: ExtractedContent, requestId: string
   const truncated = truncateContent(request.content);
   const prompt = buildPrompt(
     truncated.text,
-    getLanguageLabel(settings.language),
-    settings.summaryLength,
+    getLanguageLabel(effectiveLanguage),
+    effectiveSummaryLength,
     settings.customPrompt,
   );
 
@@ -87,6 +97,7 @@ async function handleSummaryRequest(request: ExtractedContent, requestId: string
       apiKey: settings.apiKey.trim(),
       model: settings.model,
       prompt,
+      length: effectiveSummaryLength,
     })) {
       summary += chunk;
       await emitRuntimeEvent({
@@ -107,7 +118,8 @@ async function handleSummaryRequest(request: ExtractedContent, requestId: string
         url: request.url,
         title: request.title,
         summary,
-        language: settings.language,
+        prompt,
+        language: effectiveLanguage,
         timestamp: Date.now(),
       });
     }
@@ -159,7 +171,12 @@ export default defineBackground({
         }
 
         if (message.type === "start-summary") {
-          void handleSummaryRequest(message.payload, message.requestId);
+          void handleSummaryRequest(
+            message.payload,
+            message.requestId,
+            message.options?.language,
+            message.options?.summaryLength,
+          );
           sendResponse({ accepted: true });
           return true;
         }

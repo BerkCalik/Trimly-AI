@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { SUPPORTED_LANGUAGES, msg } from "../../src/lib/i18n";
+import { getDefaultPrompt } from "../../src/config/prompts";
+import { SUPPORTED_LANGUAGES, msg, setAppLanguage, useI18nVersion } from "../../src/lib/i18n";
 import { renderMarkdown } from "../../src/lib/markdown";
 import {
-  DEFAULT_PROMPT,
   clearHistory,
   getHistory,
   getSettings,
@@ -11,6 +11,7 @@ import {
 } from "../../src/lib/storage";
 import { applyTheme, watchSystemTheme } from "../../src/lib/theme";
 import type {
+  AppLanguage,
   HistoryItem,
   Model,
   Settings,
@@ -30,13 +31,14 @@ interface SettingsDraft {
   language: string;
   summaryLength: SummaryLength;
   theme: Theme;
+  appLanguage: AppLanguage;
   customPrompt: string;
 }
 
 function toDraft(settings: Settings): SettingsDraft {
   return {
     ...settings,
-    customPrompt: settings.customPrompt ?? DEFAULT_PROMPT,
+    customPrompt: settings.customPrompt ?? getDefaultPrompt(settings.summaryLength),
   };
 }
 
@@ -49,6 +51,7 @@ function getDomain(url: string): string {
 }
 
 export function App() {
+  useI18nVersion();
   const [activeTab, setActiveTab] = useState<ActiveTab>("settings");
   const [settings, setSettings] = useState<Settings | null>(null);
   const [draft, setDraft] = useState<SettingsDraft | null>(null);
@@ -80,6 +83,7 @@ export function App() {
         return;
       }
 
+      setAppLanguage(loadedSettings.appLanguage);
       setSettings(loadedSettings);
       setDraft(toDraft(loadedSettings));
       setHistoryItems(loadedHistory);
@@ -120,6 +124,7 @@ export function App() {
     { value: "short", label: msg("lengthShort") },
     { value: "medium", label: msg("lengthMedium") },
     { value: "detailed", label: msg("lengthDetailed") },
+    { value: "full", label: msg("lengthFull") },
   ];
 
   const themeOptions: Array<{ value: Theme; label: string }> = [
@@ -128,8 +133,35 @@ export function App() {
     { value: "dark", label: msg("themeDark") },
   ];
 
+  const appLanguageOptions: Array<{ value: AppLanguage; label: string }> = [
+    { value: "auto", label: msg("appLanguageAuto") },
+    { value: "tr", label: "Türkçe" },
+    { value: "en", label: "English" },
+  ];
+
   const handleFieldChange = <K extends keyof SettingsDraft>(key: K, value: SettingsDraft[K]) => {
-    setDraft((current) => (current ? { ...current, [key]: value } : current));
+    setDraft((current) => {
+      if (!current) {
+        return current;
+      }
+
+      if (key === "summaryLength") {
+        const nextLength = value as SummaryLength;
+        const currentDefaultPrompt = getDefaultPrompt(current.summaryLength);
+        const nextDefaultPrompt = getDefaultPrompt(nextLength);
+
+        return {
+          ...current,
+          summaryLength: nextLength,
+          customPrompt:
+            current.customPrompt === currentDefaultPrompt
+              ? nextDefaultPrompt
+              : current.customPrompt,
+        };
+      }
+
+      return { ...current, [key]: value };
+    });
   };
 
   const handleSave = async () => {
@@ -149,13 +181,16 @@ export function App() {
       language: draft.language,
       summaryLength: draft.summaryLength,
       theme: draft.theme,
+      appLanguage: draft.appLanguage,
       customPrompt:
-        draft.customPrompt.trim() && draft.customPrompt.trim() !== DEFAULT_PROMPT
+        draft.customPrompt.trim() &&
+        draft.customPrompt.trim() !== getDefaultPrompt(draft.summaryLength)
           ? draft.customPrompt.trim()
           : null,
     };
 
     await saveSettings(nextSettings);
+    setAppLanguage(nextSettings.appLanguage);
     setSettings(nextSettings);
     setDraft(toDraft(nextSettings));
     setSaveFeedback(msg("saveSuccess"));
@@ -200,11 +235,28 @@ export function App() {
             languageOptions={languageOptions}
             lengthOptions={lengthOptions}
             themeOptions={themeOptions}
+            appLanguageOptions={appLanguageOptions}
             onFieldChange={handleFieldChange}
             onToggleApiKey={() => setIsApiKeyVisible((current) => !current)}
-            onResetPrompt={() => handleFieldChange("customPrompt", DEFAULT_PROMPT)}
-            onSave={() => void handleSave()}
+            onOpenApiKeys={() =>
+              void chrome.tabs.create({
+                url: "https://platform.openai.com/api-keys",
+              })
+            }
           />
+          <div className="settings-actions">
+            <button
+              className="secondary-button"
+              type="button"
+              onClick={() =>
+                handleFieldChange("customPrompt", getDefaultPrompt(draft.summaryLength))
+              }>
+              {msg("resetPrompt")}
+            </button>
+            <button className="primary-button" type="button" onClick={() => void handleSave()}>
+              {msg("save")}
+            </button>
+          </div>
         </section>
       ) : (
         <section className="history-layout">

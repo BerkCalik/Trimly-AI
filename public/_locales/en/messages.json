@@ -14,8 +14,17 @@
   "popupCopy": {
     "message": "Copy summary"
   },
+  "popupOpenInNewTab": {
+    "message": "Open in new tab"
+  },
   "popupCopied": {
     "message": "Copied"
+  },
+  "popupReady": {
+    "message": "Choose a language and press Trimly to generate a summary."
+  },
+  "popupStart": {
+    "message": "Trimly"
   },
   "popupOpenSettings": {
     "message": "Open settings"
@@ -44,6 +53,12 @@
   "lengthLabel": {
     "message": "Summary length"
   },
+  "appLanguageLabel": {
+    "message": "App language"
+  },
+  "appLanguageAuto": {
+    "message": "Auto (Chrome language)"
+  },
   "themeLabel": {
     "message": "Theme"
   },
@@ -59,6 +74,9 @@
   "save": {
     "message": "Save"
   },
+  "getApiToken": {
+    "message": "Get API token"
+  },
   "saveSuccess": {
     "message": "Saved"
   },
@@ -70,6 +88,15 @@
   },
   "lengthDetailed": {
     "message": "Detailed"
+  },
+  "lengthFull": {
+    "message": "Full"
+  },
+  "settingsLanguageLengthHintSummary": {
+    "message": "The selected language controls the output language. For lengths other than Full, the app summarizes the text."
+  },
+  "settingsLanguageLengthHintFull": {
+    "message": "The selected language controls the output language. When Full is selected, the app does not summarize; it fully translates the text."
   },
   "themeAuto": {
     "message": "Auto"
@@ -109,6 +136,12 @@
   "historyDate": {
     "message": "Saved on"
   },
+  "historyShowPrompt": {
+    "message": "Show prompt"
+  },
+  "historyHidePrompt": {
+    "message": "Hide prompt"
+  },
   "show": {
     "message": "Show"
   },
@@ -144,5 +177,11 @@
   },
   "optionsTitle": {
     "message": "TrimlyAi settings"
+  },
+  "readerEmptyTitle": {
+    "message": "No summary to display"
+  },
+  "readerEmptyBody": {
+    "message": "Generate a summary from the popup and use the Open in new tab action."
   }
 }
