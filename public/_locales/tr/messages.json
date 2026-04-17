@@ -1,12 +1,12 @@
 {
   "extName": {
-    "message": "TrimlyAi"
+    "message": "Trimly AI"
   },
   "extDescription": {
     "message": "Makale, blog ve seçili metinleri OpenAI ile özetleyin."
   },
   "popupEmpty": {
-    "message": "Özet oluşturmak için TrimlyAi'yi okunabilir bir sayfada açın."
+    "message": "Özet oluşturmak için Trimly AI'ı okunabilir bir sayfada açın."
   },
   "popupLoading": {
     "message": "Özet hazırlanıyor"
@@ -173,10 +173,10 @@
     "message": "Özet oluşturulurken bir hata oluştu."
   },
   "contextMenuTitle": {
-    "message": "TrimlyAi ile özetle"
+    "message": "Trimly AI ile özetle"
   },
   "optionsTitle": {
-    "message": "TrimlyAi ayarları"
+    "message": "Trimly AI ayarları"
   },
   "readerEmptyTitle": {
     "message": "Gösterilecek özet yok"

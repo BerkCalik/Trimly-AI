@@ -218,7 +218,7 @@ export function App() {
     <main className="options-shell">
       <header className="page-header">
         <div>
-          <p className="eyebrow">TrimlyAi</p>
+          <p className="eyebrow">Trimly AI</p>
           <h1 className="page-title">{msg("optionsTitle")}</h1>
         </div>
       </header>

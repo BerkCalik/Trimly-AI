@@ -1,12 +1,12 @@
 {
   "extName": {
-    "message": "TrimlyAi"
+    "message": "Trimly AI"
   },
   "extDescription": {
     "message": "Summarize articles, blogs, and selected text with OpenAI."
   },
   "popupEmpty": {
-    "message": "Open TrimlyAi on a readable page to generate a summary."
+    "message": "Open Trimly AI on a readable page to generate a summary."
   },
   "popupLoading": {
     "message": "Preparing your summary"
@@ -173,10 +173,10 @@
     "message": "Something went wrong while generating the summary."
   },
   "contextMenuTitle": {
-    "message": "Summarize with TrimlyAi"
+    "message": "Summarize with Trimly AI"
   },
   "optionsTitle": {
-    "message": "TrimlyAi settings"
+    "message": "Trimly AI settings"
   },
   "readerEmptyTitle": {
     "message": "No summary to display"
