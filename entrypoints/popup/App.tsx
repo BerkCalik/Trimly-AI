@@ -32,6 +32,8 @@ function getErrorMessage(error: SummaryErrorCode): string {
       return msg("errorInvalidApiKey");
     case "rate-limit":
       return msg("errorRateLimit");
+    case "invalid-request":
+      return msg("errorInvalidRequest");
     case "network":
       return msg("errorNetwork");
     case "timeout":

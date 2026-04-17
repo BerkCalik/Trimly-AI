@@ -35,6 +35,11 @@ export function HistoryDetail({
               {item.url}
             </a>
             <p className="detail-meta">{formatDate(item)}</p>
+            {item.model ? (
+              <p className="detail-meta">
+                {msg("historyModel")} {item.model}
+              </p>
+            ) : null}
             <article
               className="summary-output"
               dangerouslySetInnerHTML={{ __html: renderSummary(item.summary) }}

@@ -39,7 +39,10 @@ export function HistoryList({
               onClick={() => onSelect(item.id)}>
               <span className="history-title">{item.title}</span>
               <p className="history-meta">
-                {getDomain(item.url)} {"·"} {formatHistoryTime(item)}
+                {getDomain(item.url)}
+                {item.model ? ` · ${item.model}` : ""}
+                {" · "}
+                {formatHistoryTime(item)}
               </p>
             </button>
           ))

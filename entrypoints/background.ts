@@ -119,6 +119,7 @@ async function handleSummaryRequest(
         title: request.title,
         summary,
         prompt,
+        model: settings.model,
         language: effectiveLanguage,
         timestamp: Date.now(),
       });

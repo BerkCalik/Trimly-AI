@@ -136,6 +136,9 @@
   "historyDate": {
     "message": "Kayıt tarihi"
   },
+  "historyModel": {
+    "message": "Model:"
+  },
   "historyShowPrompt": {
     "message": "Promptu göster"
   },
@@ -156,6 +159,9 @@
   },
   "errorRateLimit": {
     "message": "Hız sınırı aşıldı. Lütfen biraz bekleyin."
+  },
+  "errorInvalidRequest": {
+    "message": "Seçilen model mevcut istekle çalışmadı. Farklı bir model deneyin."
   },
   "errorNetwork": {
     "message": "Bağlantı hatası. İnternet bağlantınızı kontrol edin."

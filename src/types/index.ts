@@ -1,4 +1,11 @@
-export const MODEL_OPTIONS = ["gpt-4o-mini", "gpt-4o"] as const;
+export const MODEL_OPTIONS = [
+  "gpt-5-nano",
+  "gpt-5-mini",
+  "gpt-5.1",
+  "gpt-4.1",
+  "gpt-4o-mini",
+  "gpt-4o",
+] as const;
 export const SUMMARY_LENGTH_OPTIONS = ["short", "medium", "detailed", "full"] as const;
 export const THEME_OPTIONS = ["auto", "light", "dark"] as const;
 export const APP_LANGUAGE_OPTIONS = ["auto", "en", "tr"] as const;
@@ -24,6 +31,7 @@ export interface HistoryItem {
   title: string;
   summary: string;
   prompt?: string;
+  model?: Model;
   language: string;
   timestamp: number;
 }
@@ -52,6 +60,7 @@ export type SummaryErrorCode =
   | "no-api-key"
   | "invalid-api-key"
   | "rate-limit"
+  | "invalid-request"
   | "network"
   | "no-content"
   | "timeout"

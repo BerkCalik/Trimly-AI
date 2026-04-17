@@ -136,6 +136,9 @@
   "historyDate": {
     "message": "Saved on"
   },
+  "historyModel": {
+    "message": "Model:"
+  },
   "historyShowPrompt": {
     "message": "Show prompt"
   },
@@ -156,6 +159,9 @@
   },
   "errorRateLimit": {
     "message": "Rate limit exceeded. Please wait a moment."
+  },
+  "errorInvalidRequest": {
+    "message": "The selected model did not work with the current request. Try a different model."
   },
   "errorNetwork": {
     "message": "Connection error. Check your internet connection."

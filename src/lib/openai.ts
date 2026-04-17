@@ -7,8 +7,13 @@ const MAX_WORDS = 12_000;
 
 export class ApiKeyError extends Error {}
 export class RateLimitError extends Error {}
+export class InvalidRequestError extends Error {}
 export class NetworkError extends Error {}
 export class TimeoutError extends Error {}
+
+function isGpt5Model(model: Model): boolean {
+  return model.startsWith("gpt-5");
+}
 
 export function buildPrompt(
   content: string,
@@ -51,6 +56,10 @@ export function toSummaryErrorCode(error: unknown): SummaryErrorCode {
     return "rate-limit";
   }
 
+  if (error instanceof InvalidRequestError) {
+    return "invalid-request";
+  }
+
   if (error instanceof TimeoutError) {
     return "timeout";
   }
@@ -72,31 +81,60 @@ export async function* streamSummary(params: {
   const timeoutId = globalThis.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
+    const requestBody: {
+      model: Model;
+      stream: true;
+      temperature?: number;
+      messages: Array<{
+        role: "system" | "user";
+        content: string;
+      }>;
+    } = {
+      model: params.model,
+      stream: true,
+      messages: [
+        {
+          role: "system",
+          content: getSystemPrompt(params.length),
+        },
+        {
+          role: "user",
+          content: params.prompt,
+        },
+      ],
+    };
+
+    // GPT-5 variants can reject legacy sampling params in Chat Completions.
+    if (!isGpt5Model(params.model)) {
+      requestBody.temperature = 0.4;
+    }
+
     const response = await fetch(OPENAI_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${params.apiKey}`,
       },
-      body: JSON.stringify({
-        model: params.model,
-        stream: true,
-        temperature: 0.4,
-        messages: [
-          {
-            role: "system",
-            content: getSystemPrompt(params.length),
-          },
-          {
-            role: "user",
-            content: params.prompt,
-          },
-        ],
-      }),
+      body: JSON.stringify(requestBody),
       signal: controller.signal,
     });
 
     if (!response.ok) {
+      let errorMessage = `Unexpected response: ${response.status}`;
+
+      try {
+        const payload = (await response.json()) as {
+          error?: { message?: string };
+        };
+        errorMessage = payload.error?.message || errorMessage;
+      } catch {
+        try {
+          errorMessage = (await response.text()) || errorMessage;
+        } catch {
+          // Ignore body parse errors and keep the fallback message.
+        }
+      }
+
       if (response.status === 401) {
         throw new ApiKeyError("Invalid API key.");
       }
@@ -105,7 +143,11 @@ export async function* streamSummary(params: {
         throw new RateLimitError("Rate limit exceeded.");
       }
 
-      throw new NetworkError(`Unexpected response: ${response.status}`);
+      if (response.status >= 400 && response.status < 500) {
+        throw new InvalidRequestError(errorMessage);
+      }
+
+      throw new NetworkError(errorMessage);
     }
 
     if (!response.body) {
@@ -173,7 +215,12 @@ export async function* streamSummary(params: {
       throw new TimeoutError("Request timed out.");
     }
 
-    if (error instanceof ApiKeyError || error instanceof RateLimitError || error instanceof TimeoutError) {
+    if (
+      error instanceof ApiKeyError ||
+      error instanceof RateLimitError ||
+      error instanceof InvalidRequestError ||
+      error instanceof TimeoutError
+    ) {
       throw error;
     }
 

@@ -9,7 +9,7 @@ const HISTORY_LIMIT = 50;
 export function getDefaultSettings(): Settings {
   return {
     apiKey: "",
-    model: "gpt-4o-mini",
+    model: "gpt-5-mini",
     language: detectBrowserLanguage(),
     summaryLength: "medium",
     theme: "auto",

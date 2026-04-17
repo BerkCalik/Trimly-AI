@@ -111,6 +111,10 @@ export function App() {
     historyItems.find((item) => item.id === selectedHistoryId) ?? null;
 
   const modelOptions: Array<{ value: Model; label: string }> = [
+    { value: "gpt-5-nano", label: "gpt-5-nano" },
+    { value: "gpt-5-mini", label: "gpt-5-mini" },
+    { value: "gpt-5.1", label: "gpt-5.1" },
+    { value: "gpt-4.1", label: "gpt-4.1" },
     { value: "gpt-4o-mini", label: "gpt-4o-mini" },
     { value: "gpt-4o", label: "gpt-4o" },
   ];
