@@ -150,6 +150,10 @@ Recommended manual smoke tests:
 - Be careful when changing extension permissions, host permissions, or manifest settings.
 - Any permission changes affect user trust and extension review requirements.
 
+## Privacy Policy
+
+Privacy policy: `PRIVACY_POLICY.md`
+
 ## License
 
 This project is licensed under the MIT License. See `LICENSE` for details.
