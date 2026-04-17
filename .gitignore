@@ -1,0 +1,22 @@
+node_modules
+dist
+.output
+.wxt
+
+# Local environment files
+.env
+.env.*
+
+# Editor / OS files
+.DS_Store
+.idea/
+.vscode/
+.claude/
+.agents/
+
+# Logs
+*.log
+
+# Local docs / planning
+docs/
+plan.md

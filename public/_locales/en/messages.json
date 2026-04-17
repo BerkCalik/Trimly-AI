@@ -1,0 +1,148 @@
+{
+  "extName": {
+    "message": "TrimlyAi"
+  },
+  "extDescription": {
+    "message": "Summarize articles, blogs, and selected text with OpenAI."
+  },
+  "popupEmpty": {
+    "message": "Open TrimlyAi on a readable page to generate a summary."
+  },
+  "popupLoading": {
+    "message": "Preparing your summary"
+  },
+  "popupCopy": {
+    "message": "Copy summary"
+  },
+  "popupCopied": {
+    "message": "Copied"
+  },
+  "popupOpenSettings": {
+    "message": "Open settings"
+  },
+  "popupTitle": {
+    "message": "Page summary"
+  },
+  "popupThemeToggle": {
+    "message": "Theme"
+  },
+  "settingsTab": {
+    "message": "Settings"
+  },
+  "historyTab": {
+    "message": "History"
+  },
+  "apiKeyLabel": {
+    "message": "API key"
+  },
+  "modelLabel": {
+    "message": "Model"
+  },
+  "languageLabel": {
+    "message": "Language"
+  },
+  "lengthLabel": {
+    "message": "Summary length"
+  },
+  "themeLabel": {
+    "message": "Theme"
+  },
+  "customPromptLabel": {
+    "message": "Custom prompt"
+  },
+  "customPromptHint": {
+    "message": "Use {language}, {length}, and {content} placeholders."
+  },
+  "resetPrompt": {
+    "message": "Reset to default"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "saveSuccess": {
+    "message": "Saved"
+  },
+  "lengthShort": {
+    "message": "Short"
+  },
+  "lengthMedium": {
+    "message": "Medium"
+  },
+  "lengthDetailed": {
+    "message": "Detailed"
+  },
+  "themeAuto": {
+    "message": "Auto"
+  },
+  "themeLight": {
+    "message": "Light"
+  },
+  "themeDark": {
+    "message": "Dark"
+  },
+  "historySearch": {
+    "message": "Search history"
+  },
+  "historyClear": {
+    "message": "Clear history"
+  },
+  "historyClearConfirm": {
+    "message": "Clear all saved summaries?"
+  },
+  "historyEmpty": {
+    "message": "No summaries yet."
+  },
+  "historyBack": {
+    "message": "Back to list"
+  },
+  "historyTimeAgo": {
+    "message": "$TIME$ ago",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "historyDetailEmpty": {
+    "message": "Select a summary to view details."
+  },
+  "historyDate": {
+    "message": "Saved on"
+  },
+  "show": {
+    "message": "Show"
+  },
+  "hide": {
+    "message": "Hide"
+  },
+  "errorNoApiKey": {
+    "message": "Please enter your API key in settings."
+  },
+  "errorInvalidApiKey": {
+    "message": "Invalid API key. Please check your key."
+  },
+  "errorRateLimit": {
+    "message": "Rate limit exceeded. Please wait a moment."
+  },
+  "errorNetwork": {
+    "message": "Connection error. Check your internet connection."
+  },
+  "errorNoContent": {
+    "message": "No readable content was found. Select text and try again."
+  },
+  "errorContentTrimmed": {
+    "message": "The page was very long, so only the first part was summarized."
+  },
+  "errorTimeout": {
+    "message": "The request timed out. Please try again."
+  },
+  "errorUnknown": {
+    "message": "Something went wrong while generating the summary."
+  },
+  "contextMenuTitle": {
+    "message": "Summarize with TrimlyAi"
+  },
+  "optionsTitle": {
+    "message": "TrimlyAi settings"
+  }
+}

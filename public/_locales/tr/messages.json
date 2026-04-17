@@ -1,0 +1,148 @@
+{
+  "extName": {
+    "message": "TrimlyAi"
+  },
+  "extDescription": {
+    "message": "Makale, blog ve secili metinleri OpenAI ile ozetleyin."
+  },
+  "popupEmpty": {
+    "message": "Ozet olusturmak icin TrimlyAi'yi okunabilir bir sayfada acin."
+  },
+  "popupLoading": {
+    "message": "Ozet hazirlaniyor"
+  },
+  "popupCopy": {
+    "message": "Ozeti kopyala"
+  },
+  "popupCopied": {
+    "message": "Kopyalandi"
+  },
+  "popupOpenSettings": {
+    "message": "Ayarlari ac"
+  },
+  "popupTitle": {
+    "message": "Sayfa ozeti"
+  },
+  "popupThemeToggle": {
+    "message": "Tema"
+  },
+  "settingsTab": {
+    "message": "Ayarlar"
+  },
+  "historyTab": {
+    "message": "Gecmis"
+  },
+  "apiKeyLabel": {
+    "message": "API anahtari"
+  },
+  "modelLabel": {
+    "message": "Model"
+  },
+  "languageLabel": {
+    "message": "Dil"
+  },
+  "lengthLabel": {
+    "message": "Ozet uzunlugu"
+  },
+  "themeLabel": {
+    "message": "Tema"
+  },
+  "customPromptLabel": {
+    "message": "Ozel istem"
+  },
+  "customPromptHint": {
+    "message": "{language}, {length} ve {content} yer tutucularini kullanin."
+  },
+  "resetPrompt": {
+    "message": "Varsayilana don"
+  },
+  "save": {
+    "message": "Kaydet"
+  },
+  "saveSuccess": {
+    "message": "Kaydedildi"
+  },
+  "lengthShort": {
+    "message": "Kisa"
+  },
+  "lengthMedium": {
+    "message": "Orta"
+  },
+  "lengthDetailed": {
+    "message": "Detayli"
+  },
+  "themeAuto": {
+    "message": "Otomatik"
+  },
+  "themeLight": {
+    "message": "Acik"
+  },
+  "themeDark": {
+    "message": "Koyu"
+  },
+  "historySearch": {
+    "message": "Gecmiste ara"
+  },
+  "historyClear": {
+    "message": "Gecmisi temizle"
+  },
+  "historyClearConfirm": {
+    "message": "Kayitli tum ozetler silinsin mi?"
+  },
+  "historyEmpty": {
+    "message": "Henuz ozet yok."
+  },
+  "historyBack": {
+    "message": "Listeye don"
+  },
+  "historyTimeAgo": {
+    "message": "$TIME$ once",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "historyDetailEmpty": {
+    "message": "Detaylari gormek icin bir ozet secin."
+  },
+  "historyDate": {
+    "message": "Kayit tarihi"
+  },
+  "show": {
+    "message": "Goster"
+  },
+  "hide": {
+    "message": "Gizle"
+  },
+  "errorNoApiKey": {
+    "message": "Lutfen ayarlarda API anahtarinizi girin."
+  },
+  "errorInvalidApiKey": {
+    "message": "API anahtari gecersiz. Anahtari kontrol edin."
+  },
+  "errorRateLimit": {
+    "message": "Hiz siniri asildi. Lutfen biraz bekleyin."
+  },
+  "errorNetwork": {
+    "message": "Baglanti hatasi. Internet baglantinizi kontrol edin."
+  },
+  "errorNoContent": {
+    "message": "Okunabilir icerik bulunamadi. Metin secip tekrar deneyin."
+  },
+  "errorContentTrimmed": {
+    "message": "Sayfa cok uzundu, bu yuzden yalnizca ilk kisim ozetlendi."
+  },
+  "errorTimeout": {
+    "message": "Istek zaman asimina ugradi. Lutfen tekrar deneyin."
+  },
+  "errorUnknown": {
+    "message": "Ozet olusturulurken bir hata olustu."
+  },
+  "contextMenuTitle": {
+    "message": "TrimlyAi ile ozetle"
+  },
+  "optionsTitle": {
+    "message": "TrimlyAi ayarlari"
+  }
+}
