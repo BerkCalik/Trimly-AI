@@ -9,6 +9,7 @@ import {
 } from "../../src/lib/storage";
 import { applyTheme, cycleTheme, watchSystemTheme } from "../../src/lib/theme";
 import type {
+  ActiveSummaryJob,
   ContentScriptResponse,
   ExtractedContent,
   RuntimeEvent,
@@ -53,6 +54,21 @@ async function getPendingSelection(): Promise<ExtractedContent | null> {
   return (await chrome.runtime.sendMessage({
     type: "get-context-menu-text",
   })) as ExtractedContent | null;
+}
+
+async function getActiveSummaryJob(): Promise<ActiveSummaryJob | null> {
+  return (await chrome.runtime.sendMessage({
+    type: "get-active-summary-job",
+  })) as ActiveSummaryJob | null;
+}
+
+async function getActiveTabUrl(): Promise<string> {
+  const [tab] = await chrome.tabs.query({
+    active: true,
+    currentWindow: true,
+  });
+
+  return tab?.url ?? "";
 }
 
 async function extractContentFromActiveTab(): Promise<ContentScriptResponse> {
@@ -165,6 +181,39 @@ export function App() {
       );
     };
 
+    const hydrateFromJob = (job: ActiveSummaryJob) => {
+      if (cancelled) {
+        return;
+      }
+
+      requestIdRef.current = job.requestId;
+      setActiveSource(job.source);
+      setSelectedLanguage(job.language);
+      setSelectedSummaryLength(job.summaryLength);
+      setWarningMessage(job.warning === "content-trimmed" ? msg("errorContentTrimmed") : null);
+      setCopyLabel(msg("popupCopy"));
+
+      if (job.status === "streaming") {
+        setSummary(job.summary);
+        setIsStreaming(true);
+        setShowCopyButton(false);
+        setActionMode("none");
+        setStatusMessage(msg("popupLoading"));
+        return;
+      }
+
+      if (job.status === "completed") {
+        setSummary(job.summary);
+        setIsStreaming(false);
+        setShowCopyButton(Boolean(job.summary.trim()));
+        setActionMode("none");
+        setStatusMessage("");
+        return;
+      }
+
+      showError(job.error ?? "unknown");
+    };
+
     const startSummary = async (
       payload: ExtractedContent,
       language: string,
@@ -211,6 +260,16 @@ export function App() {
       }
 
       setLaunchMode("toolbar");
+      const [activeTabUrl, activeJob] = await Promise.all([
+        getActiveTabUrl(),
+        getActiveSummaryJob(),
+      ]);
+
+      if (!cancelled && activeJob?.source.url && activeJob.source.url === activeTabUrl) {
+        hydrateFromJob(activeJob);
+        return;
+      }
+
       showIdleState();
     };
 

@@ -56,6 +56,7 @@ export interface ReaderPayload {
 }
 
 export type SummaryWarningCode = "content-trimmed";
+export type SummaryJobStatus = "streaming" | "completed" | "error";
 export type SummaryErrorCode =
   | "no-api-key"
   | "invalid-api-key"
@@ -65,6 +66,20 @@ export type SummaryErrorCode =
   | "no-content"
   | "timeout"
   | "unknown";
+
+export interface ActiveSummaryJob {
+  requestId: string;
+  source: ExtractedContent;
+  summary: string;
+  language: string;
+  summaryLength: SummaryLength;
+  model: Model;
+  status: SummaryJobStatus;
+  warning: SummaryWarningCode | null;
+  error: SummaryErrorCode | null;
+  startedAt: number;
+  completedAt?: number;
+}
 
 export type ContentScriptRequest =
   | { type: "extract-content" }
@@ -81,9 +96,10 @@ export type RuntimeRequest =
       payload: ExtractedContent;
       options?: SummaryRequestOptions;
     }
-  | { type: "get-context-menu-text" };
+  | { type: "get-context-menu-text" }
+  | { type: "get-active-summary-job" };
 
-export type RuntimeResponse = ExtractedContent | null;
+export type RuntimeResponse = ExtractedContent | ActiveSummaryJob | null;
 
 export type RuntimeEvent =
   | { type: "summary-start"; requestId: string }

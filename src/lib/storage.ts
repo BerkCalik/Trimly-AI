@@ -1,9 +1,10 @@
 import { detectBrowserLanguage } from "./i18n";
-import type { HistoryItem, ReaderPayload, Settings } from "../types";
+import type { ActiveSummaryJob, HistoryItem, ReaderPayload, Settings } from "../types";
 
 const SETTINGS_KEY = "settings";
 const HISTORY_KEY = "history";
 const READER_PAYLOAD_KEY = "reader-payload";
+const ACTIVE_SUMMARY_JOB_KEY = "active-summary-job";
 const HISTORY_LIMIT = 50;
 
 export function getDefaultSettings(): Settings {
@@ -89,4 +90,17 @@ export async function getReaderPayload(): Promise<ReaderPayload | null> {
   const payload = result[READER_PAYLOAD_KEY] as ReaderPayload | undefined;
 
   return payload ?? null;
+}
+
+export async function getActiveSummaryJob(): Promise<ActiveSummaryJob | null> {
+  const result = await chrome.storage.local.get(ACTIVE_SUMMARY_JOB_KEY);
+  const job = result[ACTIVE_SUMMARY_JOB_KEY] as ActiveSummaryJob | undefined;
+
+  return job ?? null;
+}
+
+export async function saveActiveSummaryJob(job: ActiveSummaryJob): Promise<void> {
+  await chrome.storage.local.set({
+    [ACTIVE_SUMMARY_JOB_KEY]: job,
+  });
 }

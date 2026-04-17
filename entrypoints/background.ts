@@ -5,12 +5,20 @@ import {
   toSummaryErrorCode,
   truncateContent,
 } from "../src/lib/openai";
-import { addHistoryItem, ensureDefaultSettings, getSettings } from "../src/lib/storage";
+import {
+  addHistoryItem,
+  ensureDefaultSettings,
+  getActiveSummaryJob,
+  getSettings,
+  saveActiveSummaryJob,
+} from "../src/lib/storage";
 import type {
+  ActiveSummaryJob,
   ExtractedContent,
   RuntimeEvent,
   RuntimeRequest,
   RuntimeResponse,
+  SummaryErrorCode,
   SummaryLength,
 } from "../src/types";
 
@@ -50,24 +58,63 @@ async function handleSummaryRequest(
   const settings = await getSettings();
   const effectiveLanguage = languageOverride ?? settings.language;
   const effectiveSummaryLength = summaryLengthOverride ?? settings.summaryLength;
+  const startedAt = Date.now();
 
-  if (!request.content.trim()) {
+  const saveJob = async (
+    overrides: Partial<ActiveSummaryJob>,
+    replace = false,
+  ): Promise<ActiveSummaryJob> => {
+    const existingJob = await getActiveSummaryJob();
+    if (!replace && existingJob && existingJob.requestId !== requestId) {
+      return existingJob;
+    }
+
+    const nextJob: ActiveSummaryJob = {
+      requestId,
+      source: request,
+      summary: "",
+      language: effectiveLanguage,
+      summaryLength: effectiveSummaryLength,
+      model: settings.model,
+      status: "streaming",
+      warning: null,
+      error: null,
+      startedAt,
+      ...((existingJob?.requestId === requestId ? existingJob : null) ?? {}),
+      ...overrides,
+    };
+
+    await saveActiveSummaryJob(nextJob);
+    return nextJob;
+  };
+
+  const failWithError = async (
+    error: SummaryErrorCode,
+    replace = false,
+  ): Promise<void> => {
+    await saveJob({
+      status: "error",
+      error,
+      completedAt: Date.now(),
+    }, replace);
     await emitRuntimeEvent({
       type: "summary-error",
       requestId,
-      error: "no-content",
+      error,
     });
+  };
+
+  if (!request.content.trim()) {
+    await failWithError("no-content", true);
     return;
   }
 
   if (!settings.apiKey.trim()) {
-    await emitRuntimeEvent({
-      type: "summary-error",
-      requestId,
-      error: "no-api-key",
-    });
+    await failWithError("no-api-key", true);
     return;
   }
+
+  await saveJob({}, true);
 
   await emitRuntimeEvent({
     type: "summary-start",
@@ -83,6 +130,9 @@ async function handleSummaryRequest(
   );
 
   if (truncated.truncated) {
+    await saveJob({
+      warning: "content-trimmed",
+    });
     await emitRuntimeEvent({
       type: "summary-warning",
       requestId,
@@ -100,12 +150,21 @@ async function handleSummaryRequest(
       length: effectiveSummaryLength,
     })) {
       summary += chunk;
+      await saveJob({
+        summary,
+      });
       await emitRuntimeEvent({
         type: "summary-chunk",
         requestId,
         chunk,
       });
     }
+
+    await saveJob({
+      summary,
+      status: "completed",
+      completedAt: Date.now(),
+    });
 
     await emitRuntimeEvent({
       type: "summary-complete",
@@ -125,11 +184,7 @@ async function handleSummaryRequest(
       });
     }
   } catch (error) {
-    await emitRuntimeEvent({
-      type: "summary-error",
-      requestId,
-      error: toSummaryErrorCode(error),
-    });
+    await failWithError(toSummaryErrorCode(error));
   }
 }
 
@@ -169,6 +224,11 @@ export default defineBackground({
           pendingSelection = null;
           sendResponse(response);
           return false;
+        }
+
+        if (message.type === "get-active-summary-job") {
+          void getActiveSummaryJob().then((job) => sendResponse(job));
+          return true;
         }
 
         if (message.type === "start-summary") {
