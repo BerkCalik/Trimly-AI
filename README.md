@@ -10,6 +10,10 @@ Coming soon. The extension is not published yet.
 
 `Chrome Web Store: Coming Soon`
 
+Install from GitHub Releases:
+- English: [INSTALL_FROM_GITHUB_RELEASES.md](INSTALL_FROM_GITHUB_RELEASES.md)
+- Türkçe: [INSTALL_FROM_GITHUB_RELEASES_TR.md](INSTALL_FROM_GITHUB_RELEASES_TR.md)
+
 ## Features
 
 - Summarize readable web pages from the toolbar popup
