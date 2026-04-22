@@ -4,11 +4,9 @@ Trimly AI is a Chrome extension built with WXT, React, and TypeScript for summar
 
 It supports full-page extraction, selected-text summaries from the context menu, prompt customization, history tracking, and an expanded reader view for long outputs.
 
-## Chrome Web Store
+## Installing
 
-Coming soon. The extension is not published yet.
-
-`Chrome Web Store: Coming Soon`
+Chrome Web Store: https://chromewebstore.google.com/detail/trimly-ai/acjpofnbheacpkpjaafiolbomcacbljh
 
 Install from GitHub Releases:
 - English: [INSTALL_FROM_GITHUB_RELEASES.md](INSTALL_FROM_GITHUB_RELEASES.md)
